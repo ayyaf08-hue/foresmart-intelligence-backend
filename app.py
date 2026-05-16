@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from routers import ai, trading, risk
 
 PORT = int(os.environ.get("PORT", 8000))
@@ -8,6 +9,19 @@ app = FastAPI(
     title="foresmart-intelligence",
     description="Ranim ForeSmart Investment Corporation - AI Engine",
     version="1.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "[ayyaf08-hue.github.io](https://ayyaf08-hue.github.io)",
+        "[ayyaf08-hue.github.io](https://ayyaf08-hue.github.io/foresmart-investment-platform)",
+        "[foresmart4.store](https://www.foresmart4.store)",
+        "[foresmart4.store](https://foresmart4.store)"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(ai.router)
@@ -36,13 +50,3 @@ def health_check():
         "status": "healthy",
         "port": PORT
     }
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(
-        "app:app",
-        host="0.0.0.0",
-        port=PORT,
-        reload=False
-    )
