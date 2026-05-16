@@ -11,13 +11,13 @@ app = FastAPI(
     version="1.0"
 )
 
+# إعدادات CORS لتمكين واجهة المستخدم من الاتصال
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "[ayyaf08-hue.github.io](https://ayyaf08-hue.github.io)",
-        "[ayyaf08-hue.github.io](https://ayyaf08-hue.github.io/foresmart-investment-platform)",
-        "[foresmart4.store](https://www.foresmart4.store)",
-        "[foresmart4.store](https://foresmart4.store)"
+        "https://ayyaf08-hue.github.io",       # ← رابط موقعك الرئيسي
+        "https://www.foresmart4.store",        # ← دومينك المستقبلي
+        "https://foresmart4.store",            # ← بدون www
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -28,25 +28,14 @@ app.include_router(ai.router)
 app.include_router(trading.router)
 app.include_router(risk.router)
 
-
 @app.get("/")
 def home():
     return {
         "status": "foresmart-intelligence active",
         "version": "1.0",
-        "company": "Ranim ForeSmart Investment Corporation",
-        "endpoints": [
-            "/ai/recommend?asset=Bitcoin",
-            "/ai/full-analysis?asset=Bitcoin",
-            "/trading/portfolio",
-            "/risk/score?asset=Bitcoin"
-        ]
+        "company": "Ranim ForeSmart Investment Corporation"
     }
-
 
 @app.get("/health")
-def health_check():
-    return {
-        "status": "healthy",
-        "port": PORT
-    }
+def healthcheck():
+    return {"status": "healthy", "port": PORT}
